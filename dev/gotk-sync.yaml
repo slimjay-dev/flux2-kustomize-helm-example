@@ -1,0 +1,27 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: dev
+  namespace: dev
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: dev
+  url: ssh://git@github.com/slimjay-dev/flux2-kustomize-helm-example
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: dev
+  namespace: dev
+spec:
+  interval: 10m0s
+  path: ./
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: dev
+  validation: client
